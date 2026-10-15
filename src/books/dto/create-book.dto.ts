@@ -1,6 +1,14 @@
-export class createbookdto {
+import { isNotEmpty, IsNotEmpty } from "class-validator";
+
+export class CreateBookDto {
+    @IsNotEmpty({message: "Title harus diisi"})
     readonly title: string;
-    readonly author: string;
+    @IsNotEmpty({message: "ISBN harus diisi"})
     readonly isbn: string;
-    readonly publishedyear: number;
+    @IsNotEmpty({message: "Author harus diisi"})
+    readonly author: string;
+    @IsNotEmpty({message: "Tahun publikasi harus diisi"})
+    readonly publicationYear: number;
+    @IsNotEmpty({message: "Status ketersediaan harus diisi"})
+    readonly isAvailable: boolean;
 }

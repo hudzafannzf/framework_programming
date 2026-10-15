@@ -1,6 +1,6 @@
 import { Body, Controller, Delete, Get, Param, Post, Put, Query } from '@nestjs/common';
 import { BooksService } from './books.service.js';
-import { createbookdto } from './dto/create-book.dto.js';
+import { CreateBookDto } from './dto/create-book.dto.js';
 
 @Controller('books')
 export class BooksController {
@@ -15,7 +15,7 @@ export class BooksController {
 
     // menyimpan data
     @Post()
-    simpanData(@Body() createbookdto: createbookdto) {
+    simpanData(@Body() createbookdto: CreateBookDto) {
         return this.bookservice.simpandata(createbookdto);
     }
 
@@ -23,7 +23,7 @@ export class BooksController {
     @Put(':id')
     updateData(
         @Param(`id`) id: string,
-        @Body() createbookdto: createbookdto) {
+        @Body() createbookdto: CreateBookDto) {
         return this.bookservice.updatedata(parseInt(id), createbookdto);
     }
 

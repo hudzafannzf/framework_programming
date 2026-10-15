@@ -1,17 +1,17 @@
 import { Injectable, UnauthorizedException } from '@nestjs/common';
-import { registerdto } from './dto/register.dto.js';
+import { registerDto } from './dto/register.dto.js';
 import { UserService } from '../user/user.service.js';
-import { logindto } from './dto/login.dto.js';
-import { forgotpassworddto } from './dto/forgotpassword.dto.js';
+import { loginDto } from './dto/login.dto.js';
+import { forgotpasswordDto } from './dto/forgotpassword.dto.js';
 import { randomUUID } from 'crypto';
-import { resetpassworddto } from './dto/resetpassword.dto.js';
+import { resetpasswordDto } from './dto/resetpassword.dto.js';
 
 @Injectable()
 export class AuthService {
 
     constructor(private readonly userservice: UserService) {}
 
-    register(registerdto: registerdto) {
+    register(registerdto: registerDto) {
 
         if (registerdto.password !== registerdto.confirmPassword) {
             throw new Error('Password dan confirm password tidak sama');
@@ -24,13 +24,13 @@ export class AuthService {
         }
 
         return this.userservice.newuser({
-            nama: registerdto.nama,
+            nama: registerdto.username,
             email: registerdto.email,
             password: registerdto.password
         });
     }
 
-    login(logindto: logindto) {
+    login(logindto: loginDto) {
         const user = this.userservice.findbyemail(logindto.email);
 
         if (!user) {
@@ -56,8 +56,8 @@ export class AuthService {
         token: string;
     }[] = [];
 
-    forgotPassword(forgotpassworddto: forgotpassworddto) {
-        const user = this.userservice.findbyemail(forgotpassworddto.email);
+    forgotPassword(forgotpasswordDto: forgotpasswordDto) {
+        const user = this.userservice.findbyemail(forgotpasswordDto.email);
 
         if (!user) {
             throw new UnauthorizedException('Email tidak ditemukan');
@@ -76,14 +76,14 @@ export class AuthService {
         };
     }
 
-    resetPassword(resetpassworddto: resetpassworddto) {
+    resetPassword(resetpasswordDto: resetpasswordDto) {
 
-        if (resetpassworddto.newPassword !== resetpassworddto.confirmPassword) {
+        if (resetpasswordDto.newPassword !== resetpasswordDto.confirmPassword) {
             throw new Error('Password dan confirm password tidak sama');
         }
 
         const tokenData = this.resetTokens.find(
-            item => item.token === resetpassworddto.token
+            item => item.token === resetpasswordDto.token
         );
 
         if (!tokenData) {
@@ -98,11 +98,11 @@ export class AuthService {
 
         this.userservice.updatepassword(
             user.id,
-            resetpassworddto.newPassword
+            resetpasswordDto.newPassword
         );
 
         this.resetTokens = this.resetTokens.filter(
-            item => item.token !== resetpassworddto.token
+            item => item.token !== resetpasswordDto.token
         );
 
         return {

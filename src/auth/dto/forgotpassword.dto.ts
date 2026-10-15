@@ -1,3 +1,3 @@
-export class forgotpassworddto {
+export class forgotpasswordDto {
     readonly email: string;
 }
