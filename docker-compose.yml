@@ -9,10 +9,10 @@ services:
     environment:
       POSTGRES_USER: postgres
       POSTGRES_PASSWORD: password
-      POSTGRES_DB: sikular # Perbaikan: Diganti dari POSTGRES_DATABASE
+      POSTGRES_DB: sikular # PERBAIKAN: Menggunakan POSTGRES_DB
     ports:
       # format port dikomputer:portdicontainer
-      - "5432:5432" # Perbaikan: Ditambahkan spasi setelah tanda minus
+      - "5432:5432" # PERBAIKAN: Ditambahkan spasi setelah tanda minus (-)
     volumes:
       # Menyimpan database ke hdd
       - postgres_data_volume:/var/lib/postgresql/data
