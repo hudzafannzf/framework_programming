@@ -1,36 +1,53 @@
-import { Body, Controller, Delete, Get, Param, Post, Put, Query } from '@nestjs/common';
+import {Controller, Get, Post, Delete, Put, Patch, Param, Body } from '@nestjs/common';
+
 import { BooksService } from './books.service.js';
 import { CreateBookDto } from './dto/create-book.dto.js';
 
 @Controller('books')
 export class BooksController {
+  constructor(private readonly booksService: BooksService) {}
 
-    constructor(private readonly bookservice: BooksService) {}
+  // GET /books
+  @Get()
+  getBooks() {
+    return this.booksService.findAll();
+  }
 
-    // menampilkan data
-    @Get()
-    findAll(@Query() query: any ){
-        return this.bookservice.findall()
-    }
+  // POST /books
+  @Post()
+  createBook(@Body() createBookDto: CreateBookDto) {
+    return this.booksService.create(createBookDto);
+  }
 
-    // menyimpan data
-    @Post()
-    simpanData(@Body() createbookdto: CreateBookDto) {
-        return this.bookservice.simpandata(createbookdto);
-    }
+  // GET /books/:id
+  @Get(':id')
+  getBookById(@Param('id') id: string) {
+    return {
+      data: `Buku dengan ID ${id}`,
+    };
+  }
 
-    // mengupdate data
-    @Put(':id')
-    updateData(
-        @Param(`id`) id: string,
-        @Body() createbookdto: CreateBookDto) {
-        return this.bookservice.updatedata(parseInt(id), createbookdto);
-    }
+  // PUT /books/:id
+  @Put(':id')
+  updateBookById(@Param('id') id: string) {
+    return {
+      data: `Buku dengan ID ${id} berhasil diperbarui`,
+    };
+  }
 
-    // menghapus data
-    @Delete(':id')
-    hapusdata(@Param('id') id: string) {
-        return this.bookservice.hapusdata(parseInt(id));
-    }
-    
+  // PATCH /books/:id
+  @Patch(':id')
+  updatePartialBook(@Param('id') id: string) {
+    return {
+      data: `Buku dengan ID ${id} berhasil diperbarui sebagian`,
+    };
+  }
+
+  // DELETE /books/:id
+  @Delete(':id')
+  deleteBookById(@Param('id') id: string) {
+    return {
+      data: `Buku dengan ID ${id} berhasil dihapus`,
+    };
+  }
 }

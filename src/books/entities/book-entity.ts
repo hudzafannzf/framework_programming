@@ -1,32 +1,34 @@
-import { Column, CreateDateColumn, DeleteDateColumn, Entity, PrimaryGeneratedColumn } from "typeorm";
-import { UpdateDateColumn } from "typeorm/browser";
+import { join } from 'path';
+import { Column, CreateDateColumn, DeleteDateColumn, Entity, JoinColumn, OneToOne, PrimaryGeneratedColumn, UpdateDateColumn } from 'typeorm';
+import { Author } from '../../author/entities/author-entity.js';
 
-@Entity({name:'Book'})
-export class Book{
-    @PrimaryGeneratedColumn('uuid')
-    id: number;
+@Entity({ name: 'books' })
+export class Book {
+  @PrimaryGeneratedColumn('uuid')
+  id: string;
 
-    @Column({type:'varchar', length:100})
-    title: string;
+  @Column({ type: 'varchar', length: 100 })
+  title: string;
 
-    @Column({type:'varchar', length:50})
-    author: string;
+  @Column({ type: 'varchar', length: 100 })
+  isbn: string;
 
-     @Column({type:'varchar', length:100})
-    isbn: string;
+  @Column({ type: 'int', default: 0, name: 'publish_year' })
+  publishYear: number;
 
-     @Column({type:'int', default:0})
-    pubLisheatYear: number;
+  @Column({ type: 'boolean', default: true, name: 'is_available' })
+  isAvailable: boolean;
 
-    @Column({type:'boolean', default:true})
-    IsAvailable: boolean;
+  @OneToOne(() => Author, { cascade: true })
+  @JoinColumn({name: 'author_id'})
+  author:Author
 
-    @CreateDateColumn({name:'created_at'})
-    createAt:Date;
+  @CreateDateColumn({ name: 'created_at' })
+  createdAt: Date;
 
-    @UpdateDateColumn({name:'update_at'})
-    updateAt: Date;
+  @UpdateDateColumn({ name: 'updated_at' })
+  updatedAt: Date;
 
-    @DeleteDateColumn({name:'deleted_at'})
-    deleteAt: Date;
+  @DeleteDateColumn({ name: 'deleted_at' })
+  deletedAt: Date | null;
 }

@@ -1,20 +1,21 @@
-services:
-  #konfigurasi untuk container database
+version: '3.8'
 
-    postgres-db:
-        image: postgres:16-alpine
-        container_name : harkat_postgre_container
-        restart: always
-        environment:
-          POSTGRES_USER: postgres
-          POSTGRES_PASSWORD: password
-          POSTGRES_DATABASE: sikular
-        ports:
-           #format port dikomputer:postdicontainer
-         -"5432:5432"
-        volumes:
-        #Menyimpan database ke hdd
-        - postgres_data_volume:/var/lib/postgresql/data
+services:
+  # konfigurasi untuk container database
+  postgres-db:
+    image: postgres:16-alpine
+    container_name: harkat_postgre_container
+    restart: always
+    environment:
+      POSTGRES_USER: postgres
+      POSTGRES_PASSWORD: password
+      POSTGRES_DB: sikular # Perbaikan: Diganti dari POSTGRES_DATABASE
+    ports:
+      # format port dikomputer:portdicontainer
+      - "5432:5432" # Perbaikan: Ditambahkan spasi setelah tanda minus
+    volumes:
+      # Menyimpan database ke hdd
+      - postgres_data_volume:/var/lib/postgresql/data
 
 volumes:
-  postgres_data_volume: 
+  postgres_data_volume:
